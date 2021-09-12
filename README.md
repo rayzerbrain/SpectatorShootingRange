@@ -1,6 +1,10 @@
 # Spectator-Shooting-Range
 An SCP:SL Exiled 3.0 plugin implementing a shooting range for spectators. The range is located outside of the wall perpendicular to the escape tunnel, that is, the wall the MTF helicopter flies over.
 
+# To install
+
+If you are unfamiliar with installing Exiled plugins, do the following: on this page navigate to the releases link on the right side of the screen and download the latest .dll file. Then, Put this file in your Exiled\Plugins file. 
+
 # In-depth information
 The shooting range can be accessed whenever someone is spectating using the .range command in their console. This teleports them as a tutorial class to the range and gives them one of each weapon (excluding the com-15, as it causes the inventory limit to exceed 8). They are constricted to within a fairly small boundary to practice shooting targets located at varying distances from the range starting area.
 
@@ -8,7 +12,7 @@ The shooting range can be accessed whenever someone is spectating using the .ran
 This plugin is not intended to affect gameplay and is only intending to provide spectators with an alternate time-killer while waiting to spawn. However, certain aspects of the plugin may affect natural gameplay. This includes: hearing spectators shooting guns near the escape on surface, and being able to faintly hear and talk to said spectators (if the configuration allows)
 
 # Configuration
-The configurations that will appear in your [port number]-config.yml file allow you to change the following:
+The configurations that will appear in your [port number]-config.yml file allows you to change the following:
  
 Enable or disable the plugin 
 
