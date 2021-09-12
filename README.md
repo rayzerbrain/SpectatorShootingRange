@@ -5,7 +5,7 @@ An SCP:SL Exiled 3.0 plugin implementing a shooting range for spectators. The ra
 The shooting range can be accessed whenever someone is spectating using the .range command in their console. This teleports them as a tutorial class to the range and gives them one of each weapon (excluding the com-15, as it causes the inventory limit to exceed 8). They are constricted to within a fairly small boundary to practice shooting targets located at varying distances from the range starting area.
 
 # Configuration
-The configurations that will appear in your [port number]-config.yml file allow you to change the following: 
+The configurations that will appear in your [port number]-config.yml file allow you to change the following: \n
   is_enabled: true
 Player broadcast that appears when a player dies or joins as a spectator
   death_greeting: To join the shooting range, type .range into your console(`)!
