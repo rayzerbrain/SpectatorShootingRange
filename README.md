@@ -16,14 +16,17 @@ Commands to utilize-
 (not yet implemented) ToggleRange (server console command)- a command for those with access to the server console to easily disable the shooting range without altering the config file
 
 ### Disclaimer
-This plugin is not intended to affect gameplay and is only intending to provide spectators with an alternate time-killer while waiting to spawn. However, certain aspects of the plugin may affect natural gameplay. This includes: hearing spectators shooting guns near the escape on surface, and being able to faintly hear and talk to said spectators (if the configuration allows)
+This plugin is not intended to affect gameplay and is only intending to provide spectators with an alternate time-killer while waiting to spawn. However, certain aspects of the plugin may affect natural gameplay. This includes: hearing spectators shooting guns near the escape on surface, and being able to faintly hear and talk to said spectators (if the configuration allows). In addition, make sure no other plugins you have installed conflict with this one, for example one that makes it difficult to use the tutorial class.
 
 ### Configuration
-The configurations that will appear in your [port number]-config.yml file allows you to do/change the following:
+Make sure to keep the smae data type when changing the configuration, i.e. don't set is_enabled to yes. Set text values to nothing if you wish no message to be displayed for the specific event, and remember that players can remove targets that are too close to the shooting area.
+
+
+The configurations that will appear in your [port number]-config.yml file allows you to do/change the following (values already present are default values upon implementation)
+:
  
 
-(values already present are default values upon implementation)
-
+///////////////////////////////////////////////////////////
 
 Enable or disable the plugin 
 
