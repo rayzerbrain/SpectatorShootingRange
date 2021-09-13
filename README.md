@@ -21,6 +21,10 @@ This plugin is not intended to affect gameplay and is only intending to provide 
 ### Configuration
 The configurations that will appear in your [port number]-config.yml file allows you to do/change the following:
  
+
+(values already present are default values upon implementation)
+
+
 Enable or disable the plugin 
 
   is_enabled: true
