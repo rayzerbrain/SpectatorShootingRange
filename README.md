@@ -13,7 +13,7 @@ Commands to utilize-
 
 .spectate (client console command)- anyone in the shooting range can use this command to return to spectator (they will be returned automatically for respawn events)
 
-ToggleRange (server console command)- a command for those with access to the server console to easily disable the shooting range without altering the config file
+(not yet implemented) ToggleRange (server console command)- a command for those with access to the server console to easily disable the shooting range without altering the config file
 
 # Disclaimer
 This plugin is not intended to affect gameplay and is only intending to provide spectators with an alternate time-killer while waiting to spawn. However, certain aspects of the plugin may affect natural gameplay. This includes: hearing spectators shooting guns near the escape on surface, and being able to faintly hear and talk to said spectators (if the configuration allows)
