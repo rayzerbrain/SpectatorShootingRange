@@ -5,7 +5,7 @@ An SCP:SL Exiled 3.0 plugin implementing a shooting range for spectators. The ra
 If you are unfamiliar with installing Exiled plugins, do the following: on this page navigate to the releases link on the right side of the screen and download the latest .dll file. Then, Put this file in your Exiled\Plugins file with any other plugins you might have. 
 
 # In-depth information
-The shooting range can be accessed whenever someone is spectating using the .range command in their console. This teleports them as a tutorial class to the range and gives them one of each weapon (excluding the com-15, as it causes the inventory limit to exceed 8). They are constricted to within a fairly small boundary to practice shooting targets located at varying distances from the range starting area.
+The shooting range can be accessed whenever someone that is spectating uses the .range command in their console. This teleports them as a tutorial class to the range and gives them one of each weapon (excluding the com-15, as it causes the inventory limit to exceed 8). They are constricted to within a fairly small boundary to practice shooting targets located at varying distances from the range starting area.
 
 Commands to utilize-
 
