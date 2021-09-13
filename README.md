@@ -19,7 +19,7 @@ Commands to utilize-
 This plugin is not intended to affect gameplay and is only intending to provide spectators with an alternate time-killer while waiting to spawn. However, certain aspects of the plugin may affect natural gameplay. This includes: hearing spectators shooting guns near the escape on surface, and being able to faintly hear and talk to said spectators (if the configuration allows)
 
 ### Configuration
-The configurations that will appear in your [port number]-config.yml file allows you to change the following:
+The configurations that will appear in your [port number]-config.yml file allows you to do/change the following:
  
 Enable or disable the plugin 
 
