@@ -64,6 +64,6 @@ Determines whether players with Remote Admin access are immune to the shooting r
   
   ra_bounds_immunity: true
 
-Determines whether players can talk in the shooting range (if enabled it is possible for spectators in the range to hear and talk to living players on the other side of the wall)
+Determines whether players can talk in the shooting range (if enabled it is possible for spectators in the range to hear and talk to living players on the other side of the wall, this does not include players with RA access)
   
   rangers_can_talk: true
