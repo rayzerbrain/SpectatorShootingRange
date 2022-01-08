@@ -13,10 +13,10 @@ Commands to utilize-
 
 .spectate (client console command)- anyone in the shooting range can use this command to return to spectator (they will be returned automatically for respawn events)
 
-(not yet implemented) ToggleRange (server console command)- a command for those with access to the server console to easily disable the shooting range without altering the config file
-
-### Disclaimer
+### Disclaimers
 This plugin is not intended to affect gameplay and is only intending to provide spectators with an alternate time-killer while waiting to spawn. However, certain aspects of the plugin may affect natural gameplay. This includes: hearing spectators shooting guns near the escape on surface, and being able to faintly hear and talk to said spectators (if the configuration allows). In addition, make sure no other plugins you have installed conflict with this one, for example one that makes it difficult to use the tutorial class.
+
+2.0 does not allow workbenches to spawn due to their functionality being removed lately or something. 
 
 ### Configuration
 Make sure to keep the smae data type when changing the configuration, i.e. don't set is_enabled to yes. Set text values to nothing if you wish no message to be displayed for the specific event, and remember that players can remove targets that are too close to the shooting area.
