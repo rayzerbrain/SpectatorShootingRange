@@ -8,7 +8,7 @@
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>ShootingRange</RootNamespace>
-    <AssemblyName>ShootingRange-0-0-82</AssemblyName>
+    <AssemblyName>SpectatorRange</AssemblyName>
     <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <Deterministic>true</Deterministic>
@@ -34,36 +34,41 @@
     <Reference Include="0Harmony">
       <HintPath>..\..\..\..\Documents\Exiled (5)\EXILED\Plugins\dependencies\0Harmony.dll</HintPath>
     </Reference>
-    <Reference Include="Assembly-CSharp">
-      <HintPath>..\..\..\..\Documents\Exiled (5)\Assembly-CSharp.dll</HintPath>
-    </Reference>
     <Reference Include="Assembly-CSharp-firstpass">
       <HintPath>..\..\..\..\Documents\scp\SCPSL_Data\Managed\Assembly-CSharp-firstpass.dll</HintPath>
+    </Reference>
+    <Reference Include="Assembly-CSharp-Publicized">
+      <HintPath>..\..\EXILED\bin\Debug\Assembly-CSharp-Publicized.dll</HintPath>
     </Reference>
     <Reference Include="CommandSystem.Core">
       <HintPath>..\..\..\..\Documents\scp\SCPSL_Data\Managed\CommandSystem.Core.dll</HintPath>
     </Reference>
-    <Reference Include="Exiled.API, Version=3.0.0.0, Culture=neutral, processorArchitecture=AMD64">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\Downloads\EXILED\EXILED\Plugins\dependencies\Exiled.API.dll</HintPath>
+    <Reference Include="Exiled.API, Version=4.2.2.0, Culture=neutral, processorArchitecture=AMD64">
+      <HintPath>..\packages\EXILED.4.2.2\lib\net472\Exiled.API.dll</HintPath>
     </Reference>
-    <Reference Include="Exiled.CreditTags">
-      <HintPath>..\..\..\..\Documents\Exiled (5)\EXILED\Plugins\Exiled.CreditTags.dll</HintPath>
+    <Reference Include="Exiled.Bootstrap, Version=4.2.2.0, Culture=neutral, processorArchitecture=AMD64">
+      <HintPath>..\packages\EXILED.4.2.2\lib\net472\Exiled.Bootstrap.dll</HintPath>
     </Reference>
-    <Reference Include="Exiled.CustomItems">
-      <HintPath>..\..\..\..\Documents\Exiled (5)\EXILED\Plugins\Exiled.CustomItems.dll</HintPath>
+    <Reference Include="Exiled.CreditTags, Version=4.2.2.0, Culture=neutral, processorArchitecture=AMD64">
+      <HintPath>..\packages\EXILED.4.2.2\lib\net472\Exiled.CreditTags.dll</HintPath>
     </Reference>
-    <Reference Include="Exiled.Events">
-      <HintPath>..\..\..\..\Documents\Exiled (5)\EXILED\Plugins\Exiled.Events.dll</HintPath>
+    <Reference Include="Exiled.CustomItems, Version=4.2.2.0, Culture=neutral, processorArchitecture=AMD64">
+      <HintPath>..\packages\EXILED.4.2.2\lib\net472\Exiled.CustomItems.dll</HintPath>
     </Reference>
-    <Reference Include="Exiled.Loader">
-      <HintPath>..\..\..\..\Documents\Exiled (5)\EXILED\Exiled.Loader.dll</HintPath>
+    <Reference Include="Exiled.CustomRoles, Version=4.2.2.0, Culture=neutral, processorArchitecture=AMD64">
+      <HintPath>..\packages\EXILED.4.2.2\lib\net472\Exiled.CustomRoles.dll</HintPath>
     </Reference>
-    <Reference Include="Exiled.Permissions">
-      <HintPath>..\..\..\..\Documents\Exiled (5)\EXILED\Plugins\Exiled.Permissions.dll</HintPath>
+    <Reference Include="Exiled.Events, Version=4.2.2.0, Culture=neutral, processorArchitecture=AMD64">
+      <HintPath>..\packages\EXILED.4.2.2\lib\net472\Exiled.Events.dll</HintPath>
     </Reference>
-    <Reference Include="Exiled.Updater">
-      <HintPath>..\..\..\..\Documents\Exiled (5)\EXILED\Plugins\Exiled.Updater.dll</HintPath>
+    <Reference Include="Exiled.Loader, Version=4.2.2.0, Culture=neutral, processorArchitecture=AMD64">
+      <HintPath>..\packages\EXILED.4.2.2\lib\net472\Exiled.Loader.dll</HintPath>
+    </Reference>
+    <Reference Include="Exiled.Permissions, Version=4.2.2.0, Culture=neutral, processorArchitecture=AMD64">
+      <HintPath>..\packages\EXILED.4.2.2\lib\net472\Exiled.Permissions.dll</HintPath>
+    </Reference>
+    <Reference Include="Exiled.Updater, Version=3.1.1.0, Culture=neutral, processorArchitecture=AMD64">
+      <HintPath>..\packages\EXILED.4.2.2\lib\net472\Exiled.Updater.dll</HintPath>
     </Reference>
     <Reference Include="Mirror, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -86,12 +91,17 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="API\RangeBoundaries.cs" />
+    <Compile Include="Commands\SpawnBench.cs" />
     <Compile Include="Commands\Range.cs" />
     <Compile Include="Commands\Spectate.cs" />
     <Compile Include="Config.cs" />
-    <Compile Include="EventHandlers\EventHandlers.cs" />
-    <Compile Include="ShootingRange.cs" />
+    <Compile Include="EventHandlers.cs" />
+    <Compile Include="PluginMain.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

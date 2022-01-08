@@ -1,27 +1,50 @@
 ﻿using Exiled.API.Interfaces;
+using Broadcast = Exiled.API.Features.Broadcast;
 using System.ComponentModel;
+using UnityEngine;
+using System.Collections.Generic;
 
 namespace ShootingRange
 {
     public class Config : IConfig
     {
-        [Description("Indicates if the plugin is enabled or not")]
+        
+        [Description("Indicates if the plugin is enabled or not. THIS IS FOR SPAWNING BENCHES, NOT ACTUAL SHOOTING RANGE")]
         public bool IsEnabled { get; set; } = true;
+        [Description("Determines whether the default range will be used. If false, one of the below random coordinates will be chosen each round")]
+        public bool UseDefaultRange { get; set; } = true;
+        [Description("List of alternative range locations. The \"w\" will determine the radius of the sphere (rectangle) that forms the boundaries  (one has been provided as an example, please don't actually use it)")]
+        public List<Vector4> OtherRangeLocations { get; set; } = new List<Vector4>()
+        {
+            {
+                Vector4.one
+            }
+        };
+
 
         [Description("Player broadcast that appears when a player dies or joins as a spectator")]
-        public string Death_greeting { get; set; } = "To join the shooting range, type .range into your console(`)!";
-
-        [Description("Time in seconds that the death_greeting is broadcasted for (default is 5)")]
-        public int Death_greeting_time { get; set; } = 5;
+        public Exiled.API.Features.Broadcast DeathBroadcast { get; set; } = new Exiled.API.Features.Broadcast()
+        {
+            Duration = 5,
+            Content = "Type .range to join the shooting range",
+            Show = true
+        };
 
         [Description("Player broadcast that appears when a player enters the shooting range")]
-        public string Range_greeting { get; set; } = "Welcome to the shooting range! Type .spectate into your console to return to spectator";
-
-        [Description("Time in seconds that Range_greeting is broadcasted for (default is 5)")]
-        public int Range_greeting_time { get; set; } = 5;
+        public Exiled.API.Features.Broadcast RangeGreeting { get; set; } = new Exiled.API.Features.Broadcast()
+        {
+            Duration = 5,
+            Content = "Welcome to the shooting range! Type .spectate into your console to return (you will be returned automatically for respawns, but you may be affected by an afk detecter)",
+            Show = true
+        };
 
         [Description("Player broadcast that appears when everyone in the range is returned to spectator to spawn")]
-        public string Returning_for_spawn_message { get; set; } = "You will be respawning soon!";
+        public Exiled.API.Features.Broadcast RespawnBroadcast { get; set; } = new Exiled.API.Features.Broadcast
+        {
+            Duration = 5,
+            Content = "You will be respawning soon!",
+            Show = true
+        };
 
         [Description("Distance each set of targets are away from each other (default is 16)")]
         public int Relative_target_distance { get; set; } = 16;
@@ -30,8 +53,10 @@ namespace ShootingRange
         public int Absolute_target_distance { get; set; } = 7;
 
         [Description("Determines whether players with Remote Admin access are immune to the shooting range bounds (default is true)")]
-        public bool RA_bounds_immunity { get; set; } = true;
+        public bool Ra_bounds_immunity { get; set; } = false;
 
+        [Description("Determines whether players can talk in the shooting range (if enabled it is possible for them to hear and talk to living players on the other side of the wall, players with Remote Admin access are exempt from this)")]
+        public bool Rangers_can_talk { get; set; } = true;
         
     }
 }

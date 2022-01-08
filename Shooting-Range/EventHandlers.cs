@@ -7,56 +7,36 @@ using Exiled.API.Enums;
 using Mirror;
 using UnityEngine;
 using Object = UnityEngine.Object;
+using ShootingRange.API;
 
-namespace ShootingRange.EventHandlers 
+namespace ShootingRange 
 {
     public class EventHandlers
     {
-        const int bigXBound = 237;
-        const int smallXBound = 202;
-        const int bigZBound = -28;
-        const int smallZBound = -54;
-        const int YBound = 1000;
-
-        public bool IsOnRange(Player player)
-        {
-            if (player.Position.x < bigXBound
-            && player.Position.x > smallXBound
-            && player.Position.z > smallZBound
-            && player.Position.z < bigZBound
-            && player.Position.y < YBound)
-            {
-                return true;
-            }
-            return false;
-        }
+        public RangeBoundaries curBounds = new RangeBoundaries();
+        public List<Player> mutedPlayers = new List<Player>();
+        public List<Player> freshlyDead = new List<Player>();
+        public List<Player> rangerList = new List<Player>();
         public void BringRangers()
         {
-            foreach (Player player in Player.List)
+            foreach (Player plyr in rangerList)
             {
-                if (IsOnRange(player))
-                {
-                    player.Broadcast(5, ShootingRange.Instance.Config.Returning_for_spawn_message);
-                    player.ClearInventory(true);
-                    player.Role = RoleType.Spectator;
-                }
+                rangerList.Remove(plyr);
+                plyr.Broadcast(PluginMain.Instance.Config.RespawnBroadcast);
+                plyr.ClearInventory(true);
+                plyr.Role = RoleType.Spectator;
             }
-        }
-        public static void SpawnPrefab(float x, float y, float z, float rotation, int prefabId)
-        {
-            GameObject obj = Object.Instantiate(NetworkManager.singleton.spawnPrefabs[prefabId]);
-            obj.transform.position = new Vector3(x, y, z);
-            obj.transform.rotation = new Quaternion(0, rotation, 0, 1);
-            NetworkServer.Spawn(obj);
         }
         
         public void OnRoundStarted()
         {
+            int randNum = Random.Range(0, PluginMain.Instance.Config.OtherRangeLocations.Count - 1);
+            if (!PluginMain.Instance.Config.UseDefaultRange) curBounds = new RangeBoundaries(PluginMain.Instance.Config.OtherRangeLocations[randNum]);
             Timing.RunCoroutine(WaitForRespawnCoroutine());
             Timing.RunCoroutine(SpawnTargetsCoroutine());
             Timing.RunCoroutine(CheckBoundsCoroutine());
         }
-        public void OnJoined(JoinedEventArgs ev)
+        public void OnVerified(VerifiedEventArgs ev)
         {
             if (Round.IsStarted)
             {
@@ -65,23 +45,68 @@ namespace ShootingRange.EventHandlers
         }
         public void OnDied(DiedEventArgs ev)
         {
+            freshlyDead.Add(ev.Target);
             Timing.RunCoroutine(DyingCoroutine(ev.Target));
+        }
+        public void OnLeft(LeftEventArgs ev)
+        {
+            if (rangerList.Contains(ev.Player))
+            {
+                ev.Player.ClearInventory(true);
+                rangerList.Remove(ev.Player);
+            }
         }
         public void OnShooting(ShootingEventArgs ev)
         {
-            if (IsOnRange(ev.Shooter))
+            if (rangerList.Contains(ev.Shooter))
             {
                 Firearm weapon = (Firearm)ev.Shooter.CurrentItem;
-                weapon.Ammo = 2;
+                weapon.Ammo = weapon.MaxAmmo;
             }
         }
-
+        public void OnShot(ShotEventArgs ev)
+        {
+            if(rangerList.Contains(ev.Shooter) && ev.Target != null && !rangerList.Contains(ev.Target))
+            {
+                ev.CanHurt = false;
+            }
+        }
+        public void OnDroppingItem(DroppingItemEventArgs ev)
+        {
+            if(rangerList.Contains(ev.Player))
+            {
+                ev.IsAllowed = false;
+            }
+        }
+        public void OnChangingMuteStatus(ChangingMuteStatusEventArgs ev)
+        {
+            Timing.RunCoroutine(MuteChangeCoroutine());
+            
+            IEnumerator<float> MuteChangeCoroutine()
+            {
+                yield return Timing.WaitForSeconds(2f);
+                if (ev.IsMuted)
+                {
+                    mutedPlayers.Add(ev.Player);
+                }
+                else if (!ev.IsMuted && !mutedPlayers.IsEmpty())
+                {
+                    foreach (Player player in mutedPlayers)
+                    {
+                        if (player.Equals(ev.Player))
+                        {
+                            mutedPlayers.Remove(player);
+                        }
+                    }
+                }
+            }
+        }
         public IEnumerator<float> DyingCoroutine(Player deadGuy)
         {
-            yield return Timing.WaitForSeconds(5f);
-            deadGuy.Broadcast((ushort)ShootingRange.Instance.Config.Death_greeting_time, ShootingRange.Instance.Config.Death_greeting);
+            yield return Timing.WaitForSeconds(10f);
+            freshlyDead.Remove(deadGuy);
+            deadGuy.Broadcast(PluginMain.Instance.Config.DeathBroadcast);
         }
-
         public IEnumerator<float> WaitForRespawnCoroutine()
         {
             for (;;)
@@ -101,29 +126,21 @@ namespace ShootingRange.EventHandlers
         {
             for (;;)
             {
-                foreach (Player player in Player.List)
+                foreach (Player plyr in Player.List)
                 {
-                    const int bufferSize = 5;
-
-                    if ((player.Position.z < smallZBound && player.Position.z > smallZBound - bufferSize
-                        || player.Position.x < smallXBound && player.Position.x > smallXBound - bufferSize 
-                        || player.Position.z > bigZBound && player.Position.z< bigZBound + bufferSize
-                        || player.Position.x > bigXBound && player.Position.x< bigXBound + bufferSize
-                        || player.Position.y > YBound)
-                        && player.Position.x > smallXBound - bufferSize &&player.Position.x < bigXBound +bufferSize
-                        && player.Position.z < bigZBound + bufferSize &&player.Position.z > smallZBound - bufferSize
-                        && player.Zone.Equals(ZoneType.Surface))
+                    if (!curBounds.IsOnRange(plyr) && rangerList.Contains(plyr))
                     {
-                        if(ShootingRange.Instance.Config.RA_bounds_immunity&&player.RemoteAdminAccess)
+                        if(PluginMain.Instance.Config.Ra_bounds_immunity&&plyr.RemoteAdminAccess)
                         {
                             continue;
                         }
-                        player.ClearInventory(true);
-                        player.Kill();
-                        player.Broadcast(3, "You went out of bounds");
+                        plyr.ClearInventory();
+                        plyr.SetRole(RoleType.Spectator);
+                        plyr.Broadcast(3, "You went out of bounds");
+                        rangerList.Remove(plyr);
                     }
                 }
-                yield return Timing.WaitForSeconds((float)0.8);
+                yield return Timing.WaitForSeconds(0.8f);
                 if (!Round.IsStarted)
                 {
                     break;
@@ -132,31 +149,28 @@ namespace ShootingRange.EventHandlers
         }
         public IEnumerator<float> SpawnTargetsCoroutine()
         {
-            
             yield return Timing.WaitForSeconds(4f);
-            int distance = ShootingRange.Instance.Config.Absolute_target_distance;
-            int distanceZbetween = ShootingRange.Instance.Config.Relative_target_distance;
+            int distance = PluginMain.Instance.Config.Absolute_target_distance;
+            int distanceZbetween = PluginMain.Instance.Config.Relative_target_distance;
+
             const float distanceXBetweeen = 3.5f;
             const int startTargetsX = 235;
             const float height = 996.63f;
+            Quaternion rot = new Quaternion(0, 1, 0, 1);
+
             for (var i=0;i<3;i++)
             {
-                SpawnPrefab(startTargetsX - i*distanceXBetweeen, height, -53 - distance - distanceZbetween*i, 1, 21);
-                SpawnPrefab(startTargetsX - 1 - distanceXBetweeen*3 - distanceXBetweeen*i, height, -53 - distance - distanceZbetween*i, 1,22);
-                SpawnPrefab(startTargetsX - 2 - distanceXBetweeen*6 - distanceXBetweeen*i, height, -53 - distance - distanceZbetween*i, 1, 23);
-                SpawnPrefab(startTargetsX+3, height, -30 - 4.0f * i, -1f, 2);
-                SpawnPrefab(startTargetsX+3, height, -53 + 4.0f * i, -1f, 2);
+                ShootingTarget.Spawn(ShootingTargetType.Sport, new Vector3(startTargetsX - i * distanceXBetweeen, height, -53 - distance - distanceZbetween * i), rot);
+                ShootingTarget.Spawn(ShootingTargetType.ClassD, new Vector3(startTargetsX - 1 - distanceXBetweeen * 3 - distanceXBetweeen * i, height, -53 - distance - distanceZbetween * i), rot);
+                ShootingTarget.Spawn(ShootingTargetType.Binary, new Vector3(startTargetsX - 2 - distanceXBetweeen * 6 - distanceXBetweeen * i, height, -53 - distance - distanceZbetween * i), rot);
             }
-            SpawnPrefab(startTargetsX + 3, height, -41.5f, -1f, 2);
-            SpawnPrefab(204f, height+1.5f, -36, 3, 2);
-            SpawnPrefab(203.5f, height + 0.2f, -36, 3, 2);
 
             //0 rotation = towards gate a
             //+1 rotation to turn clockwise 90
             //for targets at least
             //x smaller as going to A
             //z bigger going to escape
-
+        
         }
     }
 }
