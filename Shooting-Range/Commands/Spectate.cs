@@ -7,6 +7,7 @@ using System.Collections.Generic;
 
 namespace ShootingRange.Commands
 {
+    
     [CommandHandler(typeof(ClientCommandHandler))]
     public class Spectate : ICommand
     {
@@ -21,10 +22,23 @@ namespace ShootingRange.Commands
             IEnumerator<float> SettingSpectatorCoroutine(Player spectatee)
             {
                 yield return Timing.WaitForSeconds(.5f);
+                PluginMain.Instance.EventHandler.rangerList.Remove(spectatee);
                 spectatee.SetRole(RoleType.Spectator);
+                spectatee.IsMuted = false;
+                if(!PluginMain.Instance.Config.Rangers_can_talk && !PluginMain.Instance.EventHandler.mutedPlayers.IsEmpty())
+                {
+                    foreach (Player plyr in PluginMain.Instance.EventHandler.mutedPlayers)
+                    {
+                        if(plyr.Equals(spectatee))
+                        {
+                            spectatee.IsMuted = true;
+                            break;
+                        }
+                    }
+                }
             }
             Player player = Player.Get((CommandSender)sender);
-            if(ShootingRange.Instance.EventHandler.IsOnRange(player))
+            if(PluginMain.Instance.EventHandler.curBounds.IsOnRange(player))
             {
                 player.ClearInventory(true);
                 Timing.RunCoroutine(SettingSpectatorCoroutine(player));

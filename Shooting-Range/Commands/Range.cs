@@ -5,10 +5,10 @@ using Exiled.API.Features;
 using Exiled.API.Extensions;
 using MEC;
 using System.Collections.Generic;
-using Mirror;
 
 namespace ShootingRange.Commands
 {
+    
     [CommandHandler(typeof (ClientCommandHandler))]
     class Range : ICommand
     {
@@ -20,13 +20,18 @@ namespace ShootingRange.Commands
 
         public bool Execute(ArraySegment<string> arguments, ICommandSender sender, out string response)
         {
-            
-            Player player = Player.Get((CommandSender)sender);
-            if(player.Team.Equals(Team.RIP)&&Round.IsStarted)
+            Player player = Player.Get(sender);
+            if(player.Role.Equals(RoleType.Spectator)&&Round.IsStarted
+                && !PluginMain.Instance.EventHandler.freshlyDead.Contains(player))
             {
-                player.SetRole(RoleType.Tutorial);
-                player.Broadcast((ushort)ShootingRange.Instance.Config.Range_greeting_time, ShootingRange.Instance.Config.Range_greeting);
+                player.SetRole(RoleType.Tutorial, Exiled.API.Enums.SpawnReason.None);
+                player.Broadcast(PluginMain.Instance.Config.RangeGreeting);
                 Timing.RunCoroutine(EnteringRangeCoroutine(player));
+                if (!PluginMain.Instance.Config.Rangers_can_talk) //&& !player.RemoteAdminAccess)
+                {   
+                    player.IsMuted = true;
+                }
+
             }
             else
             {
@@ -39,7 +44,8 @@ namespace ShootingRange.Commands
             IEnumerator<float> EnteringRangeCoroutine(Player ranger)
             {
                 yield return Timing.WaitForSeconds(.5f);
-                ranger.Position = new UnityEngine.Vector3((float)218.5, (float)999.1, (float)-43.0);
+                ranger.Position = PluginMain.Instance.EventHandler.curBounds.spawn;
+                PluginMain.Instance.EventHandler.rangerList.Add(ranger);
                 ranger.AddItem(ItemType.GunAK);
                 ranger.AddItem(ItemType.GunCOM18);
                 ranger.AddItem(ItemType.GunCrossvec);
@@ -49,8 +55,9 @@ namespace ShootingRange.Commands
                 ranger.AddItem(ItemType.GunRevolver);
                 ranger.AddItem(ItemType.GunShotgun);
                 ranger.Health = 100000;
-
+                ranger.ChangeAppearance(RoleType.ChaosConscript);
             }
         }
     }
+   
 }
