@@ -17,14 +17,20 @@ namespace ShootingRange
         public List<Player> mutedPlayers = new List<Player>();
         public List<Player> freshlyDead = new List<Player>();
         public List<Player> rangerList = new List<Player>();
+        
         public void BringRangers()
         {
+            List<Player> toRemoveList = new List<Player>();
             foreach (Player plyr in rangerList)
             {
-                rangerList.Remove(plyr);
+                toRemoveList.Add(plyr);
                 plyr.Broadcast(PluginMain.Instance.Config.RespawnBroadcast);
                 plyr.ClearInventory(true);
-                plyr.Role = RoleType.Spectator;
+                plyr.SetRole(RoleType.Spectator);
+            }
+            foreach(Player plyr in toRemoveList)
+            {
+                rangerList.Remove(plyr);
             }
         }
         
