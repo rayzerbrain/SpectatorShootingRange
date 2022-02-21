@@ -1,0 +1,7 @@
+C:\Users\Ray\source\repos\Spectator-Shooting-Range\ShootingRange\obj\Debug\ShootingRange.csproj.AssemblyReference.cache
+C:\Users\Ray\source\repos\Spectator-Shooting-Range\ShootingRange\obj\Debug\ShootingRange.csproj.CoreCompileInputs.cache
+C:\Users\Ray\Documents\SL Plugins\SpectatorRange.dll
+C:\Users\Ray\Documents\SL Plugins\SpectatorRange.pdb
+C:\Users\Ray\source\repos\Spectator-Shooting-Range\ShootingRange\obj\Debug\ShootingRange.csproj.CopyComplete
+C:\Users\Ray\source\repos\Spectator-Shooting-Range\ShootingRange\obj\Debug\SpectatorRange.dll
+C:\Users\Ray\source\repos\Spectator-Shooting-Range\ShootingRange\obj\Debug\SpectatorRange.pdb
