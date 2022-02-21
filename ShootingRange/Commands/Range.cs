@@ -29,7 +29,7 @@ namespace ShootingRange.Commands
                 return false;
             }
 
-            if(player.Role.Equals(RoleType.Spectator)&&Round.IsStarted
+            if(player.Role.Type.Equals(RoleType.Spectator) && Round.IsStarted
                 && !PluginMain.Instance.EventHandler.freshlyDead.Contains(player))
             {
                 player.SetRole(RoleType.Tutorial, Exiled.API.Enums.SpawnReason.None);
