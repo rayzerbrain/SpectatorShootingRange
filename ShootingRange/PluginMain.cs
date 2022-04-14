@@ -1,11 +1,12 @@
-﻿using Exiled.API.Features;
-using Exiled.Events;
-using Exiled;
+﻿using System;
+
+using Exiled.API.Features;
 using Exiled.API.Enums;
+
+using ShootingRange.API;
+
 using Player = Exiled.Events.Handlers.Player;
 using Server = Exiled.Events.Handlers.Server;
-using System;
-using ShootingRange.API;
 
 namespace ShootingRange
 {

@@ -1,14 +1,14 @@
-﻿using Exiled.API.Enums;
+﻿using System.Linq;
+
+using UnityEngine;
+
+using MEC;
+
+using Exiled.API.Enums;
 using Exiled.API.Features;
 using Exiled.API.Features.Toys;
-using MEC;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Exiled.API.Extensions;
-using UnityEngine;
+
 using Object = UnityEngine.Object;
 
 namespace ShootingRange.API

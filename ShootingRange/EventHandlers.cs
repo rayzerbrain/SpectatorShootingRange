@@ -1,15 +1,14 @@
-﻿using MEC;
+﻿using System.Collections.Generic;
+
+using UnityEngine;
+
+using MEC;
+
 using Exiled.API.Features;
 using Exiled.Events.EventArgs;
-using System.Collections.Generic;
 using Exiled.API.Features.Items;
-using Exiled.API.Enums;
-using Mirror;
-using UnityEngine;
-using Object = UnityEngine.Object;
+
 using ShootingRange.API;
-using AdminToys;
-using Exiled.API.Features.Toys;
 
 namespace ShootingRange 
 {

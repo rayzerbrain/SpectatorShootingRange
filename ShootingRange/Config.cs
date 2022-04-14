@@ -1,8 +1,8 @@
 ﻿using Exiled.API.Interfaces;
-using Broadcast = Exiled.API.Features.Broadcast;
 using System.ComponentModel;
 using UnityEngine;
 using System.Collections.Generic;
+using PlayerBroadcast = Exiled.API.Features.Broadcast;
 
 namespace ShootingRange
 {
@@ -37,7 +37,7 @@ namespace ShootingRange
         };
 
         [Description("Player broadcast that appears when a player dies or joins as a spectator (This will not show if force_spectators is true)")]
-        public Exiled.API.Features.Broadcast DeathBroadcast { get; set; } = new Exiled.API.Features.Broadcast()
+        public PlayerBroadcast DeathBroadcast { get; set; } = new PlayerBroadcast()
         {
             Duration = 5,
             Content = "Type .range to join the shooting range",
@@ -45,7 +45,7 @@ namespace ShootingRange
         };
 
         [Description("Player broadcast that appears when a player enters the shooting range")]
-        public Exiled.API.Features.Broadcast RangeGreeting { get; set; } = new Exiled.API.Features.Broadcast()
+        public PlayerBroadcast RangeGreeting { get; set; } = new PlayerBroadcast()
         {
             Duration = 5,
             Content = "Welcome to the shooting range! Type .spectate into your console to return (you will be returned automatically for respawns, but you may be affected by an afk detecter)",
@@ -53,7 +53,7 @@ namespace ShootingRange
         };
 
         [Description("Player broadcast that appears when everyone in the range is returned to spectator to spawn")]
-        public Exiled.API.Features.Broadcast RespawnBroadcast { get; set; } = new Exiled.API.Features.Broadcast
+        public PlayerBroadcast RespawnBroadcast { get; set; } = new PlayerBroadcast
         {
             Duration = 5,
             Content = "You will be respawning soon!",

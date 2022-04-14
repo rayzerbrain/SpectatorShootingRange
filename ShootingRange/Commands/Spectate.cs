@@ -1,13 +1,11 @@
-﻿using CommandSystem;
-using System;
+﻿using System;
+
+using CommandSystem;
+
 using Exiled.API.Features;
-using MEC;
-using Exiled.API.Extensions;
-using System.Collections.Generic;
 
 namespace ShootingRange.Commands
 {
-    
     [CommandHandler(typeof(ClientCommandHandler))]
     public class Spectate : ICommand
     {
@@ -19,9 +17,9 @@ namespace ShootingRange.Commands
 
         public bool Execute(ArraySegment<string> arguments, ICommandSender sender, out string response)
         {
-            Player player = Player.Get((CommandSender)sender);
+            Player player = Player.Get(sender);
 
-            if(PluginMain.Instance.ActiveRange.HasPlayer(player))
+            if (PluginMain.Instance.ActiveRange.HasPlayer(player))
             {
                 player.ClearInventory();
                 player.SetRole(RoleType.Spectator);
