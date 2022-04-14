@@ -1,7 +1,10 @@
-﻿using Exiled.API.Interfaces;
+﻿using System.Collections.Generic;
 using System.ComponentModel;
+
+using Exiled.API.Interfaces;
+
 using UnityEngine;
-using System.Collections.Generic;
+
 using PlayerBroadcast = Exiled.API.Features.Broadcast;
 
 namespace ShootingRange
@@ -9,19 +12,21 @@ namespace ShootingRange
     public class Config : IConfig
     {
         
-        [Description("Indicates if the plugin is enabled or not. THIS IS FOR SPAWNING BENCHES, NOT ACTUAL SHOOTING RANGE")]
+        [Description("Indicates if the plugin is enabled or not.")]
         public bool IsEnabled { get; set; } = true;
-        [Description("Determines whether spectators will automatically be teleported to the shooting range")]
+        [Description("Determines whether spectators will automatically be teleported to the shooting range upon death")]
         public bool ForceSpectators { get; set; } = true;
         [Description("Determines whether the default range will be used. If false, one of the below coordinates will be chosen randomly each round")]
         public bool UseDefaultRange { get; set; } = true;
         [Description("Determines if a collider will be used to prevent players from going outside the bounds of the range")]
         public bool UseCollider { get; set; } = true;
-        [Description("List of alternative range locations. The \"w\" will determine the radius of the sphere (rectangle) that forms the boundaries  (one has been provided as an example, please don't actually use it)")]
+        [Description("Determines whether the \".range\" permission is required to use the .range command (this will not affect automatically teleported players)")]
+        public bool RequirePermission { get; set; } = false; 
+        [Description("List of alternative range locations. The \"w\" will determine the radius of the sphere (cube) that forms the boundaries  (note: targets will not be spawned at this location")]
         public List<Vector4> OtherRangeLocations { get; set; } = new List<Vector4>()
         {
             {
-                Vector4.zero
+                Vector4.one
             }
         };
         public List<ItemType> RangerInventory = new List<ItemType>()

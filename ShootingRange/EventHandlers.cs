@@ -14,7 +14,7 @@ namespace ShootingRange
 {
     public class EventHandlers
     {
-        private PluginMain _plugin;
+        private readonly PluginMain _plugin;
         public List<Player> FreshlyDead { get; private set; } = new List<Player>();
 
         public EventHandlers(PluginMain plugin)
@@ -41,14 +41,27 @@ namespace ShootingRange
             Timing.RunCoroutine(WaitForRespawnCoroutine());
         }
         public void OnVerified(VerifiedEventArgs ev) => Timing.CallDelayed(10f, () => ev.Player.Broadcast(PluginMain.Instance.Config.DeathBroadcast));
-        public void OnDied(DiedEventArgs ev)
+        public void OnDied(DiedEventArgs ev) => 
+            Timing.RunCoroutine(OnDiedCoroutine(ev.Target, ev.Killer.Role.Type == RoleType.Scp049));
+        private IEnumerator<float> OnDiedCoroutine(Player plyr, bool byDoctor)
         {
-            if (ev.Killer.Role.Type == RoleType.Scp049)
+            if (byDoctor)
             {
-                FreshlyDead.Add(ev.Target);
-                Timing.CallDelayed(10f, () => FreshlyDead.Remove(ev.Target));
+                FreshlyDead.Add(plyr);
+                yield return Timing.WaitForSeconds(10f);
+                FreshlyDead.Remove(plyr);
             }
-               
+
+            if (_plugin.Config.ForceSpectators)
+            {
+                yield return Timing.WaitForSeconds(0.5f);
+                _plugin.ActiveRange.TryAdmit(plyr);
+            }
+            else
+            {
+                yield return Timing.WaitForSeconds(5f);
+                plyr.Broadcast(_plugin.Config.DeathBroadcast);
+            }
         }
         public void OnLeft(LeftEventArgs ev)
         {

@@ -99,6 +99,7 @@ namespace ShootingRange.API
             {
                 plyr.ClearInventory();
                 plyr.SetRole(RoleType.Spectator);
+                plyr.Broadcast(PluginMain.Instance.Config.RespawnBroadcast, true);
             }
         }
     }
