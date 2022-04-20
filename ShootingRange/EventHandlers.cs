@@ -24,11 +24,13 @@ namespace ShootingRange
         
         public void OnRoundStarted()
         {
-            _plugin.ActiveRange = _plugin.Config.RangeLocation == null ? new SpectatorRange() : new SpectatorRange(_plugin.Config.RangeLocation);
-            _plugin.ActiveRange.SpawnTargets();
+            SpectatorRange range = _plugin.Config.RangeLocation == null ? new SpectatorRange() : new SpectatorRange(_plugin.Config.RangeLocation);
+            range.SpawnTargets();
 
             if (_plugin.Config.UsePrimitives)
-                _plugin.ActiveRange.SpawnPrimitives();
+                range.SpawnPrimitives();
+
+            _plugin.ActiveRange = range;
 
             Timing.RunCoroutine(WaitForRespawnCoroutine());
         }
@@ -69,7 +71,8 @@ namespace ShootingRange
                 gun.Ammo = gun.MaxAmmo;
             }
         }
-        public void OnDroppingItem(DroppingItemEventArgs ev) => ev.IsAllowed = !_plugin.ActiveRange.HasPlayer(ev.Player);
+        public void OnDroppingItem(DroppingItemEventArgs ev) => 
+            ev.IsAllowed = !_plugin.ActiveRange.HasPlayer(ev.Player);
         public IEnumerator<float> WaitForRespawnCoroutine()
         {
             for (;;)
