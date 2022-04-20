@@ -59,8 +59,8 @@ namespace ShootingRange
             Show = true
         };
 
-        [Description("Distance each set of targets are away from each other (default is 16)")]
-        public int RelativeTargetDistance { get; set; } = 16;
+        [Description("Distance each set of targets are away from each other (default is 24)")]
+        public int RelativeTargetDistance { get; set; } = 24;
 
         [Description("Distance all targets are away from the shooting zone (default is 7)")]
         public int AbsoluteTargetDistance { get; set; } = 7;
