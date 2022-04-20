@@ -34,7 +34,6 @@ namespace ShootingRange
             ItemType.GunRevolver,
             ItemType.GunShotgun
         };
-
         [Description("Player broadcast that appears when a player dies or joins as a spectator (This will not show if force_spectators is true)")]
         public PlayerBroadcast DeathBroadcast { get; set; } = new PlayerBroadcast()
         {
@@ -42,7 +41,6 @@ namespace ShootingRange
             Content = "Type .range to join the shooting range",
             Show = true
         };
-
         [Description("Player broadcast that appears when a player enters the shooting range")]
         public PlayerBroadcast RangeGreeting { get; set; } = new PlayerBroadcast()
         {
@@ -50,7 +48,6 @@ namespace ShootingRange
             Content = "Welcome to the shooting range! Type .spectate into your console to return (you will be returned automatically for respawns, but you may be affected by an afk detecter)",
             Show = true
         };
-
         [Description("Player broadcast that appears when everyone in the range is returned to spectator to spawn")]
         public PlayerBroadcast RespawnBroadcast { get; set; } = new PlayerBroadcast
         {
@@ -58,10 +55,8 @@ namespace ShootingRange
             Content = "You will be respawning soon!",
             Show = true
         };
-
         [Description("Distance each set of targets are away from each other (default is 24)")]
         public int RelativeTargetDistance { get; set; } = 24;
-
         [Description("Distance all targets are away from the shooting zone (default is 7)")]
         public int AbsoluteTargetDistance { get; set; } = 7;
     }

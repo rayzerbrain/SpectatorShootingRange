@@ -13,7 +13,7 @@ namespace ShootingRange.Commands
 
         public string[] Aliases { get;} = Array.Empty<string>();
 
-        public string Description { get;} = "returns you to spectator if you are a tutorial class";
+        public string Description { get;} = "Returns you to spectating if you are on the range";
 
         public bool Execute(ArraySegment<string> arguments, ICommandSender sender, out string response)
         {
@@ -27,7 +27,7 @@ namespace ShootingRange.Commands
                 return true;
             }
 
-            response = "You are not on the range, you cannot become a spectator";
+            response = "Error, you are not on the shooting range";
             return false;
         }
     }

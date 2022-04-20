@@ -96,11 +96,11 @@ namespace ShootingRange.API
             _primitives[3] = Primitive.Create(_primitives[2].Position - new Vector3(dif.x, 0, 0), null, _primitives[2].Scale);
             _primitives[4] = Primitive.Create(new Vector3(center.x, _smallBound.y, center.z), null, new Vector3(dif.x, thick, dif.z));
 
-            _primitives[0].Color = Color.clear;
+            _primitives[0].Color = color;
             for (int i = 1; i < 4; i++)
             {
                 _primitives[i].Base.NetworkScale = _primitives[i].Scale;
-                _primitives[i].Color = Color.clear;
+                _primitives[i].Color = color;
             }
         }
         //public void UnspawnCollider() => Object.Destroy(_collider);
