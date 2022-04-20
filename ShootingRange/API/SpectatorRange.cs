@@ -49,12 +49,11 @@ namespace ShootingRange.API
             player.Broadcast(PluginMain.Instance.Config.RangeGreeting);
             Timing.CallDelayed(0.5f, () =>
             {
-                player.Position = PluginMain.Instance.ActiveRange.Spawn;
+                player.Position = Spawn;
                 player.AddItem(PluginMain.Instance.Config.RangerInventory);
                 player.Health = 100000;
                 player.ChangeAppearance(RoleType.ChaosConscript);
             });
-
             return true;
         }
         public void SpawnTargets()
