@@ -24,23 +24,16 @@ namespace ShootingRange
         
         public void OnRoundStarted()
         {
-            if (!PluginMain.Instance.Config.UseDefaultRange)
-            {
-                int randNum = Random.Range(0, PluginMain.Instance.Config.OtherRangeLocations.Count - 1);
-                _plugin.ActiveRange = new SpectatorRange(PluginMain.Instance.Config.OtherRangeLocations[randNum]);
-            }
-            else
-            {
-                _plugin.ActiveRange = new SpectatorRange();
-                _plugin.ActiveRange.SpawnTargets();
-            }
+            _plugin.ActiveRange = _plugin.Config.RangeLocation == null ? new SpectatorRange() : new SpectatorRange(_plugin.Config.RangeLocation);
+            _plugin.ActiveRange.SpawnTargets();
 
-            if (_plugin.Config.UseCollider)
-                _plugin.ActiveRange.SpawnCollider();
+            if (_plugin.Config.UsePrimitives)
+                _plugin.ActiveRange.SpawnPrimitives();
 
             Timing.RunCoroutine(WaitForRespawnCoroutine());
         }
-        public void OnVerified(VerifiedEventArgs ev) => Timing.CallDelayed(10f, () => ev.Player.Broadcast(PluginMain.Instance.Config.DeathBroadcast));
+        public void OnVerified(VerifiedEventArgs ev) => 
+            Timing.CallDelayed(10f, () => ev.Player.Broadcast(PluginMain.Instance.Config.DeathBroadcast));
         public void OnDied(DiedEventArgs ev) => 
             Timing.RunCoroutine(OnDiedCoroutine(ev.Target, ev.Killer.Role.Type == RoleType.Scp049));
         private IEnumerator<float> OnDiedCoroutine(Player plyr, bool byDoctor)

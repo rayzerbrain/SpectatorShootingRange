@@ -15,7 +15,7 @@ namespace ShootingRange.API
 {
     public class SpectatorRange
     {
-        private BoxCollider _collider;
+        private Primitive[] _primitives = new Primitive[5];
         private Vector3 _smallBound = new Vector3(202, 970, -54);
         private Vector3 _bigBound = new Vector3(237, 1000, -28);
         public Vector3 Spawn { get; } = new Vector3(218.5f, 999.1f, -43.0f);
@@ -83,14 +83,25 @@ namespace ShootingRange.API
             //x smaller as going to A
             //z bigger going to escape
         }
-        public void SpawnCollider()
+        public void SpawnPrimitives()
         {
-            _collider = new BoxCollider()
+            const float thick = 0.1f;
+            Color color = Color.clear;
+            Vector3 dif = _bigBound - _smallBound;
+            Vector3 center = (_bigBound + _smallBound) / 2;
+
+            _primitives[0] = Primitive.Create(new Vector3(center.x, center.y, _bigBound.z), null, new Vector3(dif.x, dif.y, thick));
+            _primitives[1] = Primitive.Create(_primitives[0].Position - new Vector3(0, 0, dif.z), null, _primitives[0].Scale);
+            _primitives[2] = Primitive.Create(new Vector3(_bigBound.x, center.y, center.z), null, new Vector3(thick, dif.y, dif.z));
+            _primitives[3] = Primitive.Create(_primitives[2].Position - new Vector3(dif.x, 0, 0), null, _primitives[2].Scale);
+            _primitives[4] = Primitive.Create(new Vector3(center.x, _smallBound.y, center.z), null, new Vector3(dif.x, thick, dif.z));
+
+            _primitives[0].Color = Color.clear;
+            for (int i = 1; i < 4; i++)
             {
-                center = (_smallBound + _bigBound) / 2,
-                size = _bigBound - _smallBound
-            };
-            Object.Instantiate(_collider);
+                _primitives[i].Base.NetworkScale = _primitives[i].Scale;
+                _primitives[i].Color = Color.clear;
+            }
         }
         //public void UnspawnCollider() => Object.Destroy(_collider);
         public void RemovePlayers()
