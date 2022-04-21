@@ -37,7 +37,7 @@ namespace ShootingRange
         public void OnVerified(VerifiedEventArgs ev) => 
             Timing.CallDelayed(10f, () => ev.Player.Broadcast(PluginMain.Instance.Config.DeathBroadcast));
         public void OnDied(DiedEventArgs ev) => 
-            Timing.RunCoroutine(OnDiedCoroutine(ev.Target, ev.Killer.Role.Type == RoleType.Scp049));
+            Timing.RunCoroutine(OnDiedCoroutine(ev.Target, ev.Killer != null && ev.Killer.Role.Type == RoleType.Scp049));
         private IEnumerator<float> OnDiedCoroutine(Player plyr, bool byDoctor)
         {
             if (byDoctor)
@@ -57,11 +57,6 @@ namespace ShootingRange
                 yield return Timing.WaitForSeconds(5f);
                 plyr.Broadcast(_plugin.Config.DeathBroadcast);
             }
-        }
-        public void OnLeft(LeftEventArgs ev)
-        {
-            if (_plugin.ActiveRange.HasPlayer(ev.Player))
-                ev.Player.ClearInventory(true);
         }
         public void OnShooting(ShootingEventArgs ev)
         {
