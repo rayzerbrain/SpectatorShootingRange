@@ -24,23 +24,18 @@ namespace ShootingRange
         
         public void OnRoundStarted()
         {
-            if (!PluginMain.Instance.Config.UseDefaultRange)
-            {
-                int randNum = Random.Range(0, PluginMain.Instance.Config.OtherRangeLocations.Count - 1);
-                _plugin.ActiveRange = new SpectatorRange(PluginMain.Instance.Config.OtherRangeLocations[randNum]);
-            }
-            else
-            {
-                _plugin.ActiveRange = new SpectatorRange();
-                _plugin.ActiveRange.SpawnTargets();
-            }
+            SpectatorRange range = _plugin.Config.RangeLocation == null ? new SpectatorRange() : new SpectatorRange(_plugin.Config.RangeLocation);
+            range.SpawnTargets();
 
-            if (_plugin.Config.UseCollider)
-                _plugin.ActiveRange.SpawnCollider();
+            if (_plugin.Config.UsePrimitives)
+                range.SpawnPrimitives();
+
+            _plugin.ActiveRange = range;
 
             Timing.RunCoroutine(WaitForRespawnCoroutine());
         }
-        public void OnVerified(VerifiedEventArgs ev) => Timing.CallDelayed(10f, () => ev.Player.Broadcast(PluginMain.Instance.Config.DeathBroadcast));
+        public void OnVerified(VerifiedEventArgs ev) => 
+            Timing.CallDelayed(10f, () => ev.Player.Broadcast(PluginMain.Instance.Config.DeathBroadcast));
         public void OnDied(DiedEventArgs ev) => 
             Timing.RunCoroutine(OnDiedCoroutine(ev.Target, ev.Killer.Role.Type == RoleType.Scp049));
         private IEnumerator<float> OnDiedCoroutine(Player plyr, bool byDoctor)
@@ -76,7 +71,8 @@ namespace ShootingRange
                 gun.Ammo = gun.MaxAmmo;
             }
         }
-        public void OnDroppingItem(DroppingItemEventArgs ev) => ev.IsAllowed = !_plugin.ActiveRange.HasPlayer(ev.Player);
+        public void OnDroppingItem(DroppingItemEventArgs ev) => 
+            ev.IsAllowed = !_plugin.ActiveRange.HasPlayer(ev.Player);
         public IEnumerator<float> WaitForRespawnCoroutine()
         {
             for (;;)

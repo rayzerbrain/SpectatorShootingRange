@@ -13,9 +13,9 @@ namespace ShootingRange.API
 {
     public class SpectatorRange
     {
-        private Primitive[] _walls = new Primitive[2];
-        private Vector3 _smallBound = new Vector3(202, 990, -54);
-        private Vector3 _bigBound = new Vector3(237, 1005, -35.4f);
+        private Primitive[] _primitives = new Primitive[5];
+        private Vector3 _smallBound = new Vector3(202, 970, -54);
+        private Vector3 _bigBound = new Vector3(237, 1000, -28);
         public Vector3 Spawn { get; } = new Vector3(218.5f, 999.1f, -43.0f);
         public bool IsOpen => Round.IsStarted && Respawn.TimeUntilRespawn > 20;
         public SpectatorRange() { }
@@ -47,12 +47,11 @@ namespace ShootingRange.API
             player.Broadcast(PluginMain.Instance.Config.RangeGreeting);
             Timing.CallDelayed(0.5f, () =>
             {
-                player.Position = PluginMain.Instance.ActiveRange.Spawn;
+                player.Position = Spawn;
                 player.AddItem(PluginMain.Instance.Config.RangerInventory);
                 player.Health = 100000;
                 player.ChangeAppearance(RoleType.ChaosConscript);
             });
-
             return true;
         }
         public void SpawnTargets()
@@ -83,19 +82,22 @@ namespace ShootingRange.API
         }
         public void SpawnPrimitives()
         {
-            //small z has no wall
-            //Primitive.Create((_smallBound + _bigBound) / 2, null, _bigBound - _smallBound, PluginMain.Instance.Config.UseCollider);
+            const float thick = 0.1f;
+            Color color = Color.clear;
             Vector3 dif = _bigBound - _smallBound;
-            Vector3 center = (_smallBound + _bigBound) / 2;
-            const float thickness = 0.1f;
+            Vector3 center = (_bigBound + _smallBound) / 2;
 
-            _walls[0] = Primitive.Create(new Vector3(_bigBound.x, center.y, center.z), null, new Vector3(thickness, dif.y, dif.z));
-            _walls[1] = Primitive.Create(new Vector3(center.x, center.y, _bigBound.z), null, new Vector3(dif.x, dif.y, thickness));
-            foreach(Primitive wall in _walls)
+            _primitives[0] = Primitive.Create(new Vector3(center.x, center.y, _bigBound.z), null, new Vector3(dif.x, dif.y, thick));
+            _primitives[1] = Primitive.Create(_primitives[0].Position - new Vector3(0, 0, dif.z), null, _primitives[0].Scale);
+            _primitives[2] = Primitive.Create(new Vector3(_bigBound.x, center.y, center.z), null, new Vector3(thick, dif.y, dif.z));
+            _primitives[3] = Primitive.Create(_primitives[2].Position - new Vector3(dif.x, 0, 0), null, _primitives[2].Scale);
+            _primitives[4] = Primitive.Create(new Vector3(center.x, _smallBound.y, center.z), null, new Vector3(dif.x, thick, dif.z));
+
+            _primitives[0].Color = color;
+            for (int i = 1; i < 4; i++)
             {
-                wall.Color = Color.clear;
-                wall.Type = PrimitiveType.Cube;
-                wall.Base.NetworkScale = wall.Base.transform.localScale;
+                _primitives[i].Base.NetworkScale = _primitives[i].Scale;
+                _primitives[i].Color = color;
             }
         }
         //public void UnspawnCollider() => Object.Destroy(_collider);
