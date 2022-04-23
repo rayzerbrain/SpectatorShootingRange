@@ -7,6 +7,8 @@ using ShootingRange.API;
 
 using Player = Exiled.Events.Handlers.Player;
 using Server = Exiled.Events.Handlers.Server;
+using HarmonyLib;
+using System.Reflection;
 
 namespace ShootingRange
 {
@@ -17,8 +19,7 @@ namespace ShootingRange
 
         public override string Author => "rayzer";
         public override string Name => "Spectator Shooting Range";
-        public override Version Version => new Version(2, 0, 0);
-
+        public override Version Version => new Version(3, 0, 0);
         public EventHandlers EventHandler { get; private set; }
         public SpectatorRange ActiveRange { get; set; }
 
@@ -32,7 +33,7 @@ namespace ShootingRange
             Singleton = this;   
             EventHandler = new EventHandlers(this);
             RegisterEvents();
-            
+            Harmony h = new Harmony("fffffffffff");
             Config.DeathBroadcast.Show = !Config.ForceSpectators;
         }
         public override void OnDisabled()

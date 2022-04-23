@@ -24,7 +24,7 @@ namespace ShootingRange
         
         public void OnRoundStarted()
         {
-            SpectatorRange range = _plugin.Config.RangeLocation == null ? new SpectatorRange() : new SpectatorRange(_plugin.Config.RangeLocation);
+            SpectatorRange range = _plugin.Config.UseRangeLocation ?  new SpectatorRange(_plugin.Config.RangeLocation) : new SpectatorRange();
             range.SpawnTargets();
 
             if (_plugin.Config.UsePrimitives)

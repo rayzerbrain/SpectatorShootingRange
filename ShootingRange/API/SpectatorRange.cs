@@ -13,9 +13,8 @@ namespace ShootingRange.API
 {
     public class SpectatorRange
     {
-        private Primitive[] _primitives = new Primitive[5];
-        private Vector3 _smallBound = new Vector3(202, 970, -54);
-        private Vector3 _bigBound = new Vector3(237, 1000, -28);
+        private Vector3 _smallBound = new Vector3(202, 997, -54);
+        private Vector3 _bigBound = new Vector3(237, 1015, -28);
         public Vector3 Spawn { get; } = new Vector3(218.5f, 999.1f, -43.0f);
         public bool IsOpen => Round.IsStarted && Respawn.TimeUntilRespawn > 20;
         public SpectatorRange() { }
@@ -58,20 +57,22 @@ namespace ShootingRange.API
         {
             int absZOffset = PluginMain.Instance.Config.AbsoluteTargetDistance;
             int relZOffset = PluginMain.Instance.Config.RelativeTargetDistance;
-            const float dx = 2.5f;
-            const int startX = 235;
-            const int startZ = -53;
-            const float y = 996.63f;
+            float centerX = (_bigBound.x + _smallBound.x) / 2;
             Vector3 rot = new Vector3(0, 90, 0);
+            ShootingTargetToy[] targets = new ShootingTargetToy[9];
 
             for (int i = 0; i < 3; i++)
             {
-                float xOffset = dx * (i + 1);
-                float z = startZ - absZOffset - relZOffset * i;
+                float xOffset = 2.5f * (i + 1);
+                float z = _smallBound.z - absZOffset - relZOffset * i;
 
-                ShootingTargetToy.Create(ShootingTargetType.Sport, new Vector3(startX - xOffset, y, z), rot);
-                ShootingTargetToy.Create(ShootingTargetType.ClassD, new Vector3(startX - xOffset - 10, y, z), rot);
-                ShootingTargetToy.Create(ShootingTargetType.Binary, new Vector3(startX - xOffset - 20, y, z), rot);
+                targets[i * 3] = ShootingTargetToy.Create(ShootingTargetType.Sport, new Vector3(_bigBound.x - xOffset, _smallBound.y, z), rot);
+                targets[1 + i * 3] = ShootingTargetToy.Create(ShootingTargetType.ClassD, new Vector3(centerX  - xOffset, _smallBound.y, z), rot);
+                targets[2 + i * 3] = ShootingTargetToy.Create(ShootingTargetType.Binary, new Vector3(_smallBound.x + 10 - xOffset, _smallBound.y, z), rot);
+            }
+            foreach(ShootingTargetToy target in targets)
+            {
+                target.Scale = target.Scale;
             }
 
             //0 rotation = towards gate a
@@ -83,21 +84,23 @@ namespace ShootingRange.API
         public void SpawnPrimitives()
         {
             const float thick = 0.1f;
+            const float frontHeight = 2f;
             Color color = Color.clear;
             Vector3 dif = _bigBound - _smallBound;
             Vector3 center = (_bigBound + _smallBound) / 2;
+            Primitive[] primitives = new Primitive[5];
 
-            _primitives[0] = Primitive.Create(new Vector3(center.x, center.y, _bigBound.z), null, new Vector3(dif.x, dif.y, thick));
-            _primitives[1] = Primitive.Create(_primitives[0].Position - new Vector3(0, 0, dif.z), null, _primitives[0].Scale);
-            _primitives[2] = Primitive.Create(new Vector3(_bigBound.x, center.y, center.z), null, new Vector3(thick, dif.y, dif.z));
-            _primitives[3] = Primitive.Create(_primitives[2].Position - new Vector3(dif.x, 0, 0), null, _primitives[2].Scale);
-            _primitives[4] = Primitive.Create(new Vector3(center.x, _smallBound.y, center.z), null, new Vector3(dif.x, thick, dif.z));
+            primitives[0] = Primitive.Create(new Vector3(center.x, center.y, _bigBound.z), null, new Vector3(dif.x, dif.y, thick));
+            primitives[1] = Primitive.Create(new Vector3(center.x, _smallBound.y + frontHeight / 2, _smallBound.z), null, new Vector3(dif.x, frontHeight, thick));
+            primitives[2] = Primitive.Create(new Vector3(_bigBound.x, center.y, center.z), null, new Vector3(thick, dif.y, dif.z));
+            primitives[3] = Primitive.Create(primitives[2].Position - new Vector3(dif.x, 0, 0), null, primitives[2].Scale);
+            primitives[4] = Primitive.Create(new Vector3(center.x, _smallBound.y, center.z), null, new Vector3(dif.x, thick, dif.z));
 
-            _primitives[0].Color = color;
-            for (int i = 1; i < 4; i++)
+            for (int i = 0; i < 5; i++)
             {
-                _primitives[i].Base.NetworkScale = _primitives[i].Scale;
-                _primitives[i].Color = color;
+                primitives[i].Base.NetworkScale = primitives[i].Scale;
+                primitives[i].Color = color;
+                primitives[i].Type = PrimitiveType.Cube;
             }
         }
         //public void UnspawnCollider() => Object.Destroy(_collider);

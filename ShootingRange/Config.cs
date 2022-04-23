@@ -20,8 +20,10 @@ namespace ShootingRange
         public bool UsePrimitives { get; set; } = true;
         [Description("Determines whether the \".range\" permission is required to use the .range command (this will not affect automatically teleported players)")]
         public bool RequirePermission { get; set; } = false; 
-        [Description("Alternative range location. The \"w\" will determine the radius of the sphere (cube) that forms the boundaries. Leave EMPTY for default range location")]
+        [Description("Alternative range location. The \"w\" will determine the radius of the sphere (cube) that forms the boundaries.")]
         public Vector4 RangeLocation { get; set; }
+        [Description("Determines if the above location will be used or not")]
+        public bool UseRangeLocation { get; set; } = false;
         [Description("The items one will spawn with on the range")]
         public List<ItemType> RangerInventory = new List<ItemType>()
         {
