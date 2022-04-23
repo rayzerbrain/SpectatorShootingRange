@@ -33,7 +33,6 @@ namespace ShootingRange
             Singleton = this;   
             EventHandler = new EventHandlers(this);
             RegisterEvents();
-            Harmony h = new Harmony("fffffffffff");
             Config.DeathBroadcast.Show = !Config.ForceSpectators;
         }
         public override void OnDisabled()
