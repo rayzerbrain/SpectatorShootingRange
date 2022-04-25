@@ -13,8 +13,8 @@ namespace ShootingRange.API
 {
     public class SpectatorRange
     {
-        private Vector3 _smallBound = new Vector3(202, 997, -54);
-        private Vector3 _bigBound = new Vector3(237, 1015, -28);
+        private Vector3 _smallBound = new Vector3(205, 997, -54);
+        private Vector3 _bigBound = new Vector3(237, 1015, -37);
         public Vector3 Spawn { get; } = new Vector3(218.5f, 999.1f, -43.0f);
         public bool IsOpen => Round.IsStarted && Respawn.TimeUntilRespawn > 20;
         public SpectatorRange() { }
@@ -84,7 +84,7 @@ namespace ShootingRange.API
         public void SpawnPrimitives()
         {
             const float thick = 0.1f;
-            const float frontHeight = 2f;
+            const float frontHeight = 1.75f;
             Color color = Color.clear;
             Vector3 dif = _bigBound - _smallBound;
             Vector3 center = (_bigBound + _smallBound) / 2;
