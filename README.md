@@ -18,4 +18,17 @@ The shooting range can be accessed whenever someone that is spectating uses the 
 The configurations that will appear in your [port number]-config.yml file allows you to change the following (values already present are default values upon implementation)
 :
  
-//config data here
+|Config Name|Data Type|Description|Default Value|
+|-----------|---------|-----------|-------------|
+|is_enabled|bool|Determines whether the plugin is enabled or not|true|
+|force_specators|bool|Determines whether spectators will be AUTOMATICALLY transferred to the shooting range upon death|true|
+|use_primitives|bool|Determines if primitives will be used to form the boundaries of the shooting range (recommended)|true|
+|require_permission|bool|Determines if the ".range" permission is required to use the .range command (this will not affect automatically teleported players)|false|
+|range_location|Vector4|Location of a possible non default shooting range. the "w" of the vector will determine the radius of the cube that forms the boundaries|Vector4.zero|
+|use_range_location|bool|Determines whether the alternative range location will be used or not. The default range location will be used if this is set to false|false|
+|death_broadcast|Broadcast|The broadcast that will appear for a player when they die or join as a spectator|N/A|
+|range_greeting|Broadcast|The broadcast for when players enter the shooting range|N/A|
+|respawn_broadcast|Broadcast|The broadcast for when players are forced off the shooting range because they are respawning|N/A|
+|relative_target_distance|int|Distance (meters) that shooting targets will be from <b>each other</b>|24|
+|absolute_target_distance|int|Distance (meters) that shooting targets will be from <b>the range</b>|7|
+
