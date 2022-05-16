@@ -11,7 +11,7 @@ namespace ShootingRange.API
 {
     public class SpectatorRange
     {
-        private Vector3 _smallBound = new(205, 996, -52);
+        private Vector3 _smallBound = new(205, 997.25f, -52);
         private Vector3 _bigBound = new(237, 1015, -37);
         public Vector3 Spawn { get; } = new(218.5f, 999.1f, -43.0f);
         public bool IsOpen => Round.IsStarted && Respawn.TimeUntilRespawn > 20;
@@ -57,19 +57,19 @@ namespace ShootingRange.API
             int absZOffset = PluginMain.Singleton.Config.AbsoluteTargetDistance;
             int relZOffset = PluginMain.Singleton.Config.RelativeTargetDistance;
             float centerX = (_bigBound.x + _smallBound.x) / 2;
-            float xdist = 2.25f;
+            float xDist = 2.25f;
             Vector3 rot = new(0, 90, 0);
             ShootingTargetToy[] targets = new ShootingTargetToy[9];
 
             for (int i = 0; i < 3; i++)
             {
-                float xOffset = xdist * (i + 1);
+                float xOffset = xDist * (i + 1);
                 float z = _smallBound.z - absZOffset - relZOffset * i;
                 int index = i * 3;
 
                 targets[index] = ShootingTargetToy.Create(ShootingTargetType.Sport, new(_bigBound.x - xOffset, _smallBound.y, z), rot);
                 targets[index + 1] = ShootingTargetToy.Create(ShootingTargetType.ClassD, new(centerX  - xOffset, _smallBound.y, z), rot);
-                targets[index + 2] = ShootingTargetToy.Create(ShootingTargetType.Binary, new(_smallBound.x + (xdist * 3) - xOffset, _smallBound.y, z), rot);
+                targets[index + 2] = ShootingTargetToy.Create(ShootingTargetType.Binary, new(_smallBound.x + (xDist * 3) - xOffset, _smallBound.y, z), rot);
             }
 
             //0 rotation = towards gate a
@@ -81,7 +81,7 @@ namespace ShootingRange.API
         public void SpawnPrimitives()
         {
             const float thick = 0.1f;
-            const float frontHeight = 2.35f;
+            const float frontHeight = 1.9f;
             Color color = Color.clear;
             Vector3 dif = _bigBound - _smallBound;
             Vector3 center = (_bigBound + _smallBound) / 2;
