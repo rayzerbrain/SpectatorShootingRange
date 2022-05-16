@@ -19,10 +19,9 @@ namespace ShootingRange.Commands
         {
             Player player = Player.Get(sender);
 
-            if (PluginMain.Instance.ActiveRange.HasPlayer(player))
+            if (PluginMain.Singleton.ActiveRange.HasPlayer(player))
             {
-                player.ClearInventory();
-                player.SetRole(RoleType.Spectator);
+                PluginMain.Singleton.ActiveRange.RemovePlayer(player);
                 response = "Command Successful";
                 return true;
             }

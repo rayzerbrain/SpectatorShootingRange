@@ -1,30 +1,22 @@
 ﻿using System;
 
 using Exiled.API.Features;
-using Exiled.API.Enums;
 
 using ShootingRange.API;
 
 using Player = Exiled.Events.Handlers.Player;
 using Server = Exiled.Events.Handlers.Server;
-using HarmonyLib;
-using System.Reflection;
 
 namespace ShootingRange
 {
     public class PluginMain : Plugin<Config>
     {
-        private static PluginMain Singleton;
-        public static PluginMain Instance => Singleton;
-
         public override string Author => "rayzer";
         public override string Name => "Spectator Shooting Range";
-        public override Version Version => new Version(3, 0, 0);
+        public override Version Version => new(3, 0, 1);
+        public static PluginMain Singleton { get; private set; }
         public EventHandlers EventHandler { get; private set; }
         public SpectatorRange ActiveRange { get; set; }
-
-
-        public override PluginPriority Priority { get; } = PluginPriority.Higher;
 
         public override void OnEnabled()
         {

@@ -20,13 +20,13 @@ namespace ShootingRange.Commands
         {
             Player player = Player.Get(sender);
 
-            if (PluginMain.Instance.Config.RequirePermission && !sender.CheckPermission("range"))
+            if (PluginMain.Singleton.Config.RequirePermission && !sender.CheckPermission("range"))
             {
                 response = "Error, you do not have permission to use this command";
                 return false;
             }
 
-            if (!PluginMain.Instance.ActiveRange.TryAdmit(player))
+            if (!PluginMain.Singleton.ActiveRange.TryAdmit(player))
             {
                 response = "Error, either you are not a spectator or the range is currently unavailable";
                 return false;
