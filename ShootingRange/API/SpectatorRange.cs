@@ -11,7 +11,7 @@ namespace ShootingRange.API
 {
     public class SpectatorRange
     {
-        private Vector3 _smallBound = new(205, 997, -54);
+        private Vector3 _smallBound = new(205, 996, -52);
         private Vector3 _bigBound = new(237, 1015, -37);
         public Vector3 Spawn { get; } = new(218.5f, 999.1f, -43.0f);
         public bool IsOpen => Round.IsStarted && Respawn.TimeUntilRespawn > 20;
@@ -42,13 +42,13 @@ namespace ShootingRange.API
                 return false;
 
             player.SetRole(RoleType.Tutorial);
-            player.Broadcast(PluginMain.Singleton.Config.RangeGreeting);
             Timing.CallDelayed(0.5f, () =>
             {
                 player.Position = Spawn;
                 player.AddItem(PluginMain.Singleton.Config.RangerInventory);
                 player.Health = 100000;
                 player.ChangeAppearance(RoleType.ChaosConscript);
+                player.Broadcast(PluginMain.Singleton.Config.RangeGreeting);
             });
             return true;
         }
@@ -57,18 +57,19 @@ namespace ShootingRange.API
             int absZOffset = PluginMain.Singleton.Config.AbsoluteTargetDistance;
             int relZOffset = PluginMain.Singleton.Config.RelativeTargetDistance;
             float centerX = (_bigBound.x + _smallBound.x) / 2;
+            float xdist = 2.25f;
             Vector3 rot = new(0, 90, 0);
             ShootingTargetToy[] targets = new ShootingTargetToy[9];
 
             for (int i = 0; i < 3; i++)
             {
-                float xOffset = 2.25f * (i + 1);
+                float xOffset = xdist * (i + 1);
                 float z = _smallBound.z - absZOffset - relZOffset * i;
                 int index = i * 3;
 
                 targets[index] = ShootingTargetToy.Create(ShootingTargetType.Sport, new(_bigBound.x - xOffset, _smallBound.y, z), rot);
                 targets[index + 1] = ShootingTargetToy.Create(ShootingTargetType.ClassD, new(centerX  - xOffset, _smallBound.y, z), rot);
-                targets[index + 2] = ShootingTargetToy.Create(ShootingTargetType.Binary, new(_smallBound.x + 10 - xOffset, _smallBound.y, z), rot);
+                targets[index + 2] = ShootingTargetToy.Create(ShootingTargetType.Binary, new(_smallBound.x + (xdist * 3) - xOffset, _smallBound.y, z), rot);
             }
 
             //0 rotation = towards gate a
@@ -80,7 +81,7 @@ namespace ShootingRange.API
         public void SpawnPrimitives()
         {
             const float thick = 0.1f;
-            const float frontHeight = 1.75f;
+            const float frontHeight = 2.35f;
             Color color = Color.clear;
             Vector3 dif = _bigBound - _smallBound;
             Vector3 center = (_bigBound + _smallBound) / 2;
@@ -98,7 +99,7 @@ namespace ShootingRange.API
                 prims[i].Type = PrimitiveType.Cube;
 
                 // This is due to an issue with exiled spawned primitives being able to be shot through.
-                prims[i].Base.NetworkScale = prims[i].Scale;
+                //prims[i].Base.NetworkScale = prims[i].Scale;
             }
         }
         public void RemovePlayer(Player plyr)
