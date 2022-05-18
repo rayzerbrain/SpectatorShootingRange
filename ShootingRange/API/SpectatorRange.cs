@@ -97,9 +97,6 @@ namespace ShootingRange.API
             {
                 prims[i].Color = color;
                 prims[i].Type = PrimitiveType.Cube;
-
-                // This is due to an issue with exiled spawned primitives being able to be shot through.
-                //prims[i].Base.NetworkScale = prims[i].Scale;
             }
         }
         public void RemovePlayer(Player plyr)

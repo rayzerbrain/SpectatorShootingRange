@@ -41,7 +41,6 @@ namespace ShootingRange
                     ev.Player.Broadcast(PluginMain.Singleton.Config.DeathBroadcast);
             });
         }
-            
         public void OnDied(DiedEventArgs ev) => Timing.RunCoroutine(OnDiedCoroutine(ev.Target, ev.Killer != null && ev.Killer.Role == RoleType.Scp049));
         private IEnumerator<float> OnDiedCoroutine(Player plyr, bool byDoctor)
         {
