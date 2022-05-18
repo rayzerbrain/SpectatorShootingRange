@@ -14,26 +14,27 @@ namespace ShootingRange
         public override string Author => "rayzer";
         public override string Name => "Spectator Shooting Range";
         public override Version Version => new(3, 0, 1);
+        public override Version RequiredExiledVersion => new(5, 2, 1);
         public static PluginMain Singleton { get; private set; }
         public EventHandlers EventHandler { get; private set; }
         public SpectatorRange ActiveRange { get; set; }
 
         public override void OnEnabled()
         {
-            base.OnEnabled();
-         
             Singleton = this;   
             EventHandler = new EventHandlers(this);
             RegisterEvents();
             Config.DeathBroadcast.Show = !Config.ForceSpectators;
+
+            base.OnEnabled();
         }
         public override void OnDisabled()
         {
-            base.OnDisabled();
-         
             UnregisterEvents();
             EventHandler = null;
             Singleton = null;
+
+            base.OnDisabled();
         }
         public void RegisterEvents()
         {
