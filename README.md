@@ -1,4 +1,6 @@
 # Spectator-Shooting-Range
+[![Github All Releases](https://img.shields.io/github/downloads/rayzerbrain/SpectatorShootingRange/total.svg)]()
+
 An SCP:SL Exiled 5.0 plugin implementing a shooting range for spectators. The range is located outside of the wall perpendicular to the escape tunnel, that is, the wall the MTF helicopter flies over. This location can be changed inside of the configuration if deemed necessary
 
 ### To install
