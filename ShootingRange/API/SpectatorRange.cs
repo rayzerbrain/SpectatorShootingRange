@@ -6,6 +6,7 @@ using Exiled.API.Enums;
 using Exiled.API.Features;
 using Exiled.API.Features.Toys;
 using Exiled.API.Extensions;
+using Mirror;
 
 namespace ShootingRange.API
 {
@@ -97,10 +98,15 @@ namespace ShootingRange.API
             {
                 prims[i].Color = color;
                 prims[i].Type = PrimitiveType.Cube;
-
-                // This is due to an issue with exiled spawned primitives being able to be shot through.
-                //prims[i].Base.NetworkScale = prims[i].Scale;
             }
+        }
+        public void SpawnBench()
+        {
+            Quaternion rot = Quaternion.Euler(0, 180, 0);
+            Vector3 pos = new((_bigBound.x + _smallBound.x) / 2, _smallBound.y + 0.25f, _bigBound.z - 1);
+
+            GameObject benchPrefab = NetworkClient.prefabs[System.Guid.Parse("307eb9b0-d080-9dc4-78e6-673847876412")];
+            NetworkServer.Spawn(Object.Instantiate(benchPrefab, pos, rot));
         }
         public void RemovePlayer(Player plyr)
         {

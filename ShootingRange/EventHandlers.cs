@@ -25,6 +25,7 @@ namespace ShootingRange
         {
             SpectatorRange range = _plugin.Config.UseRangeLocation ? new SpectatorRange(_plugin.Config.RangeLocation) : new SpectatorRange();
             range.SpawnTargets();
+            range.SpawnBench();
 
             if (_plugin.Config.UsePrimitives)
                 range.SpawnPrimitives();
