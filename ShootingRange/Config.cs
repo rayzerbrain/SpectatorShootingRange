@@ -24,7 +24,7 @@ namespace ShootingRange
         [Description("Determines if the above location will be used or not")]
         public bool UseRangeLocation { get; set; } = false;
         [Description("The items one will spawn with on the range")]
-        public List<ItemType> RangerInventory = new()
+        public List<ItemType> RangerInventory { get; set; } = new()
         {
             ItemType.GunAK,
             ItemType.GunCOM18,
