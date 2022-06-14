@@ -23,17 +23,17 @@ namespace ShootingRange
         public Vector4 RangeLocation { get; set; } = default;
         [Description("Determines if the above location will be used or not")]
         public bool UseRangeLocation { get; set; } = false;
-        [Description("The items one will spawn with on the range")]
-        public List<ItemType> RangerInventory { get; set; } = new()
+        [Description("The items one will spawn with on the range (may be ItemType or the name of a CustomItem")]
+        public List<string> RangerInventory { get; set; } = new()
         {
-            ItemType.GunAK,
-            ItemType.GunCOM18,
-            ItemType.GunCrossvec,
-            ItemType.GunE11SR,
-            ItemType.GunFSP9,
-            ItemType.GunLogicer,
-            ItemType.GunRevolver,
-            ItemType.GunShotgun
+            "GunAK",
+            "GunCOM18",
+            "GunCrossvec",
+            "GunE11SR",
+            "GunFSP9",
+            "GunLogicer",
+            "GunRevolver",
+            "GunShotgun",
         };
         [Description("Player broadcast that appears when a player dies or joins as a spectator (This will not show if force_spectators is true)")]
         public PlayerBroadcast DeathBroadcast { get; set; } = new()

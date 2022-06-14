@@ -1,12 +1,18 @@
-﻿using UnityEngine;
+﻿using System;
+
+using UnityEngine;
 
 using MEC;
+
+using Mirror;
 
 using Exiled.API.Enums;
 using Exiled.API.Features;
 using Exiled.API.Features.Toys;
 using Exiled.API.Extensions;
-using Mirror;
+using Exiled.CustomItems.API.Features;
+
+using Object = UnityEngine.Object;
 
 namespace ShootingRange.API
 {
@@ -45,8 +51,24 @@ namespace ShootingRange.API
             player.SetRole(RoleType.Tutorial);
             Timing.CallDelayed(0.5f, () =>
             {
+                foreach (string str in PluginMain.Singleton.Config.RangerInventory)
+                {
+                    if (Enum.TryParse(str, out ItemType type))
+                    {
+                        player.AddItem(type);
+                        continue;
+                    }
+
+                    if (CustomItem.TryGet(str, out CustomItem item))
+                    {
+                        item.Give(player, false);
+                        continue;
+                    }
+
+                    Log.Error($"Your config is not set up properly! (Could not find item {str})");
+                }
+
                 player.Position = Spawn;
-                player.AddItem(PluginMain.Singleton.Config.RangerInventory);
                 player.Health = 100000;
                 player.ChangeAppearance(RoleType.ChaosConscript);
                 player.Broadcast(PluginMain.Singleton.Config.RangeGreeting);
