@@ -28,6 +28,7 @@ The configurations that will appear in your [port number]-config.yml file allows
 |require_permission|bool|Determines if the ".range" permission is required to use the .range command (this will not affect automatically teleported players)|false|
 |range_location|Vector4|Location of a possible non default shooting range. the "w" of the vector will determine the radius of the cube that forms the boundaries|Vector4.zero|
 |use_range_location|bool|Determines whether the alternative range location will be used or not. The default range location will be used if this is set to false|false|
+|ranger_inventory|List\<string\>|The list of items a player will spawn with on the range. You may use either the ItemType enum or the name of a CustomItem|
 |death_broadcast|Broadcast|The broadcast that will appear for a player when they die or join as a spectator|N/A|
 |range_greeting|Broadcast|The broadcast for when players enter the shooting range|N/A|
 |respawn_broadcast|Broadcast|The broadcast for when players are forced off the shooting range because they are respawning|N/A|
