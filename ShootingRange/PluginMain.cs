@@ -6,6 +6,7 @@ using ShootingRange.API;
 
 using Player = Exiled.Events.Handlers.Player;
 using Server = Exiled.Events.Handlers.Server;
+using Scp049 = Exiled.Events.Handlers.Scp049;
 
 namespace ShootingRange
 {
@@ -43,6 +44,7 @@ namespace ShootingRange
             Player.Shooting += EventHandler.OnShooting;
             Player.DroppingItem += EventHandler.OnDroppingItem;
             Server.RoundStarted += EventHandler.OnRoundStarted;
+            Scp049.FinishingRecall += EventHandler.OnFinishingRecall;
         }
         public void UnregisterEvents()
         {
@@ -51,6 +53,7 @@ namespace ShootingRange
             Player.Died -= EventHandler.OnDied;
             Player.Shooting -= EventHandler.OnShooting;
             Player.DroppingItem -= EventHandler.OnDroppingItem;
+            Scp049.FinishingRecall -= EventHandler.OnFinishingRecall;
         }
     }
 }

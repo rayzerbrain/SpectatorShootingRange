@@ -9,7 +9,6 @@ using Mirror;
 using Exiled.API.Enums;
 using Exiled.API.Features;
 using Exiled.API.Features.Toys;
-using Exiled.API.Extensions;
 using Exiled.CustomItems.API.Features;
 
 using Object = UnityEngine.Object;
@@ -18,9 +17,9 @@ namespace ShootingRange.API
 {
     public class SpectatorRange
     {
-        private Vector3 _smallBound = new(205, 997.25f, -52);
-        private Vector3 _bigBound = new(237, 1015, -37);
-        public Vector3 Spawn { get; } = new(218.5f, 999.1f, -43.0f);
+        private Vector3 _smallBound = new(-173.7f, 1003.4f, -45);
+        private Vector3 _bigBound = new(-143.7f, 1006.8f, -37.9f);
+        public Vector3 Spawn { get; } = new(-161.1f, 1004.9f, -42.1f);
         public bool IsOpen => Round.IsStarted && Respawn.TimeUntilRespawn > 20;
 
         public SpectatorRange() { }
@@ -45,7 +44,7 @@ namespace ShootingRange.API
         }
         public bool TryAdmit(Player player)
         {
-            if (!(IsOpen && player.IsDead && !PluginMain.Singleton.EventHandler.FreshlyDead.Contains(player)))
+            if (!(IsOpen && player.IsDead))
                 return false;
 
             player.SetRole(RoleType.Tutorial);
@@ -70,7 +69,6 @@ namespace ShootingRange.API
 
                 player.Position = Spawn;
                 player.Health = 100000;
-                player.ChangeAppearance(RoleType.ChaosConscript);
                 player.Broadcast(PluginMain.Singleton.Config.RangeGreeting);
             });
             return true;
@@ -122,14 +120,16 @@ namespace ShootingRange.API
                 prims[i].Type = PrimitiveType.Cube;
             }
         }
+
         public void SpawnBench()
         {
             Quaternion rot = Quaternion.Euler(0, 180, 0);
             Vector3 pos = new((_bigBound.x + _smallBound.x) / 2, _smallBound.y + 0.25f, _bigBound.z - 1);
 
-            GameObject benchPrefab = NetworkClient.prefabs[System.Guid.Parse("307eb9b0-d080-9dc4-78e6-673847876412")];
+            GameObject benchPrefab = NetworkClient.prefabs[Guid.Parse("307eb9b0-d080-9dc4-78e6-673847876412")];
             NetworkServer.Spawn(Object.Instantiate(benchPrefab, pos, rot));
         }
+
         public void RemovePlayer(Player plyr)
         {
             plyr.ClearInventory();

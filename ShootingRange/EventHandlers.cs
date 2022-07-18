@@ -42,27 +42,8 @@ namespace ShootingRange
                     ev.Player.Broadcast(PluginMain.Singleton.Config.DeathBroadcast);
             });
         }
-        public void OnDied(DiedEventArgs ev) => Timing.RunCoroutine(OnDiedCoroutine(ev.Target, ev.Killer != null && ev.Killer.Role == RoleType.Scp049));
-        private IEnumerator<float> OnDiedCoroutine(Player plyr, bool byDoctor)
-        {
-            if (byDoctor)
-            {
-                FreshlyDead.Add(plyr);
-                yield return Timing.WaitForSeconds(10f);
-                FreshlyDead.Remove(plyr);
-            }
-
-            if (_plugin.Config.ForceSpectators)
-            {
-                yield return Timing.WaitForSeconds(0.5f);
-                _plugin.ActiveRange.TryAdmit(plyr);
-            }
-            else
-            {
-                yield return Timing.WaitForSeconds(5f);
-                plyr.Broadcast(_plugin.Config.DeathBroadcast);
-            }
-        }
+        public void OnDied(DiedEventArgs ev) => Timing.RunCoroutine(OnDiedCoroutine(ev.Target));
+        
         public void OnShooting(ShootingEventArgs ev)
         {
             if (_plugin.ActiveRange.HasPlayer(ev.Shooter))
@@ -90,6 +71,26 @@ namespace ShootingRange
                 if (!Round.IsStarted)
                     break;
             }
+        }
+        private IEnumerator<float> OnDiedCoroutine(Player plyr)
+        {
+            FreshlyDead.Add(plyr);
+
+            if (_plugin.Config.ForceSpectators)
+            {
+                yield return Timing.WaitForSeconds(0.5f);
+                _plugin.ActiveRange.TryAdmit(plyr);
+            }
+
+            yield return Timing.WaitForSeconds(30f);
+            FreshlyDead.Remove(plyr);
+
+            if (plyr.IsDead)
+                plyr.Broadcast(_plugin.Config.DeathBroadcast);
+        }
+        public void OnFinishingRecall(FinishingRecallEventArgs ev)
+        {
+            ev.IsAllowed |= FreshlyDead.Contains(ev.Target) && _plugin.ActiveRange.HasPlayer(ev.Target);
         }
     }
 }
