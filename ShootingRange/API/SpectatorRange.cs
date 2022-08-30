@@ -12,13 +12,14 @@ using Exiled.API.Features.Toys;
 using Exiled.CustomItems.API.Features;
 
 using Object = UnityEngine.Object;
+using Exiled.API.Extensions;
 
 namespace ShootingRange.API
 {
     public class SpectatorRange
     {
         private Vector3 _smallBound = new(-173.7f, 1003.4f, -45);
-        private Vector3 _bigBound = new(-143.7f, 1006.8f, -37.9f);
+        private Vector3 _bigBound = new(-143.7f, 1016.8f, -37.9f);
         public Vector3 Spawn { get; } = new(-161.1f, 1004.9f, -42.1f);
         public bool IsOpen => Round.IsStarted && Respawn.TimeUntilRespawn > 20;
 
@@ -70,6 +71,7 @@ namespace ShootingRange.API
                 player.Position = Spawn;
                 player.Health = 100000;
                 player.Broadcast(PluginMain.Singleton.Config.RangeGreeting);
+                player.ChangeAppearance(RoleType.ChaosConscript);
             });
             return true;
         }
@@ -101,7 +103,7 @@ namespace ShootingRange.API
         }
         public void SpawnPrimitives()
         {
-            const float thick = 0.1f;
+            const float thick = 0.3f;
             const float frontHeight = 1.9f;
             Color color = Color.clear;
             Vector3 dif = _bigBound - _smallBound;
